@@ -1,0 +1,12 @@
+
+*.tfstate
+*.tfstate.backup
+*.swp
+*.swo
+/bin/
+/build/
+*.exe
+*.dll
+**/.terraform/providers/**/*.exe
+**/.terraform/*
+.terraform.lock.hcl

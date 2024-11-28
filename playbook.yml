@@ -1,0 +1,51 @@
+---
+- name: Install Jenkins on EC2
+  hosts: jenkins_instance
+  become: yes
+  tasks:
+    - name: Add Jenkins repository key
+      apt_key:
+        url: "https://pkg.jenkins.io/keys/jenkins.io.key"
+        state: present
+
+    - name: Add Jenkins APT repository
+      apt_repository:
+        repo: "deb http://pkg.jenkins.io/debian/ stable main"
+        state: present
+
+    - name: Update apt package cache
+      apt:
+        update_cache: yes
+
+    - name: Install Java (required for Jenkins)
+      apt:
+        name: openjdk-11-jdk
+        state: present
+
+    - name: Install Jenkins
+      apt:
+        name: jenkins
+        state: present
+
+    - name: Start Jenkins service
+      service:
+        name: jenkins
+        state: started
+        enabled: yes
+
+    - name: Open Jenkins port 8080
+      ufw:
+        rule: allow
+        name: 'Open Jenkins Port'
+        port: '8080'
+        proto: tcp
+        state: enabled
+
+    - name: Print Jenkins Admin password
+      command: cat /var/lib/jenkins/secrets/initialAdminPassword
+      register: jenkins_admin_password
+      changed_when: false
+
+    - name: Display Jenkins initial admin password
+      debug:
+        msg: "Jenkins initial admin password is {{ jenkins_admin_password.stdout }}"
