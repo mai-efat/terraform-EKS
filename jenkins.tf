@@ -4,8 +4,8 @@ resource "aws_eip" "ec2_eip" {
 }
 resource "aws_instance" "jenkins" {
     
-  ami           = "ubuntu/images/hvm-ssd-gp3/ubuntu-noble-24.04-amd64-server-20240927"
-  instance_type = "t3.mediun"             # High specs instance type (16 vCPUs, 64GB RAM)
+  ami           = "ami-08eb150f611ca277f"
+  instance_type = "t3.medium"             # High specs instance type (16 vCPUs, 64GB RAM)
 
   # Key pair for SSH access (ensure you replace it with your own key pair name)
   key_name = "key1"
